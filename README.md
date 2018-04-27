@@ -30,6 +30,9 @@ This library was create for testing purposes only.
    - Yet again, in case of redux - you can replace connect by another component, to make it easier to provide mocked data for the story.   
 
 # API
+
+Play in codesandbox - https://codesandbox.io/s/xk7vp60o4
+
 ```js
  import {remock} from 'react-remock';
 
@@ -39,7 +42,7 @@ This library was create for testing purposes only.
  
  remock.match((type, props) => true); // you can mock using user-defined function
  
- remock.mock(Component, (type, props) => ({type, props})); // you can alter rendering
+ remock.mock(Component, (type, props, children) => ({type, props, children})); // you can alter rendering
  
  remock.unmock('ComponentName' | ComponentName);
  

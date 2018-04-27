@@ -1,15 +1,15 @@
 import {AnyElement, getMocks, mock} from "./mocks";
 import {Remocking} from './Components';
 
-const resolver = (type: AnyElement, props: any): { type?: AnyElement, props?: any } => {
+const resolver = (type: AnyElement, props: any, children: any[]): { type?: AnyElement, props?: any, children?: any[] } => {
   if (type === Remocking) {
     mock(props.component);
   }
-  const mocks = getMocks().filter(match => match.test(type, props || {}));
+  const mocks = getMocks().filter(match => match.test(type, props || {}, children));
   if (mocks.length) {
-    return mocks[mocks.length - 1].replace(type, props)
+    return mocks[mocks.length - 1].replace(type, props, children)
   }
-  return {type, props};
+  return {type, props, children};
 };
 
 

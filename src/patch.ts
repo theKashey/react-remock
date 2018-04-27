@@ -17,8 +17,8 @@ function patchReact(React: any) {
 
     React.createElement =
       (type: any, props: any, ...args: any[]) => {
-        const { type: newType = type, props: newProps = props} = resolver(type, props);
-        return originalCreateElement(newType, newProps, ...args);
+        const { type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
+        return originalCreateElement(newType, newProps, ...children);
       };
 
     React.createFactory = (type: any) => {

@@ -11,15 +11,26 @@ const NewHole = ({children}:{children:any}) => <div>{children}-new-hole</div>
 remock.mock('Hole', ( type, props) => ({
   type: NewHole,
   props: {
-    children: props.caption
+    children: "!"+props.caption
   }
 }));
+
+remock.mock('h2', (type, props: any, children: any) => {
+  return ({
+    type: 'h4',
+    props: {
+      ...props,
+      color: '#400',
+    },
+    children: [`Mock! ${children} Mock!`]
+  })});
 
 const AppTest = () => (
   <div>
     <Blue/>
     <BlueHole/>
     <Hole caption="big" />
+    <h2>test</h2>
   </div>
 )
 
@@ -32,6 +43,7 @@ export default class App extends React.Component <{}> {
         <Remocking component={BlueHole}/>
         <AppTest/>
         Example!
+        <h2>test</h2>
       </AppWrapper>
     )
   }
