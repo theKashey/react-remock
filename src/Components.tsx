@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {unmock} from "./mocks";
 
-interface Props {
+export interface Props {
   component: React.ComponentType | string;
 }
 

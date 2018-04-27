@@ -4,5 +4,5 @@ import {Remocking} from './Components';
 
 export {
   remock,
-  Remocking
+  Remocking,
 }

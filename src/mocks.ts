@@ -1,12 +1,14 @@
 import * as React from 'react';
+import {ReactElement} from 'react';
 
+export type ReactNode = ReactElement<any>;
 export type AnyElement = string | React.ComponentType;
-export type PartialElement = Partial<React.ReactElement<any>>;
+export type PartialElement = Partial<ReactNode>;
 
 export type Matcher = (type: AnyElement, props: any) => boolean;
 export type Mocker = (type: AnyElement, props: any) => PartialElement;
 
-interface Mock {
+export interface Mock {
   test: Matcher;
   replace: Mocker;
 }

@@ -1,7 +1,7 @@
-import {AnyElement, PartialElement, getMocks, mock} from "./mocks";
+import {AnyElement, getMocks, mock} from "./mocks";
 import {Remocking} from './Components';
 
-const resolver = (type: AnyElement, props: any): PartialElement => {
+const resolver = (type: AnyElement, props: any): { type?: AnyElement, props?: any } => {
   if (type === Remocking) {
     mock(props.component);
   }
