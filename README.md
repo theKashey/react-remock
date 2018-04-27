@@ -2,10 +2,12 @@
 
 [![NPM](https://nodei.co/npm/react-remock.png?downloads=true&stars=true)](https://nodei.co/npm/react-remock/)
 
-JFYI: You can mock any React element, rendered anywhere, for any reason.
-This is like proxyquire, or jest.mock, but for React.
->Every time you can NOT "story" something due to complexity. Every time you can NOT "enzyme" something
-cos something deeply inside is "too smart" (and you can't use shallow). Every time mock the things you can NOT control.
+JFYI: You can mock any React Component, rendered anywhere, and for the any reason.
+
+This is like proxyquire, or jest.mock. Not for node.js, but for React. Pure React Dependency Injection.
+>Every time you can NOT "story" something due to complexity. 
+Every time you can NOT "enzyme" something, cos something deeply inside is "too smart" (and you can't use shallow). 
+Every that time – mock the things you can NOT control.
 
 ```text
                      /$$      /$$                     /$$      
@@ -33,16 +35,21 @@ This library was create for testing purposes only.
 
 Play in codesandbox - https://codesandbox.io/s/xk7vp60o4
 
+Api is simple - it gets `React.createElement` as an input and returns `React.createElement` as an output.
+And it will be called when real `React.createElement` has been called.
+
+If you will not return anything - element willbe completely mocked. In other cases - you could specify what to return.
 ```js
  import {remock} from 'react-remock';
 
  remock.mock('ComponentName'); // you can mock by name
+ remock.mock(/Connect\((.*)\)/); // you can mock by RegExp
  
  remock.mock(ComponentClass); // you can mock by class
  
- remock.match((type, props) => true); // you can mock using user-defined function
+ remock.match((type, props, children) => true); // you can mock using user-defined function
  
- remock.mock(Component, (type, props, children) => ({type, props, children})); // you can alter rendering
+ remock.mock(Component, (type, props, children) => ({type?, props?, children?})); // you can alter rendering
  
  remock.unmock('ComponentName' | ComponentName);
  
@@ -57,6 +64,34 @@ Play in codesandbox - https://codesandbox.io/s/xk7vp60o4
        <Red />
    </div>
  );
+```
+
+## More examples
+```js
+// change prop on Hello
+remock.mock(Hello, () => ({props:{name:"Remock"}}))
+
+// change h2 to h3, change style, change children
+remock.mock('h2', (type, props, children) => { 
+  return ({
+  type: 'h4',
+  props: {
+    ...props,
+    style: {color:'#700'},   
+  },
+  children: `🧙️ ${children} 🛠`
+})})
+
+// wrap divs with a border
+remock.mock('div', (type, props) => ({
+  props: {
+    ...props,
+    style:{
+      ...props.style,
+      border:'1px solid #000'
+    },
+  }
+}));
 ```
 
 # See also

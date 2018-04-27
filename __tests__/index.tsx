@@ -4,6 +4,7 @@ import {remock, Remocking} from '../src';
 
 const ComponentRed = () => <React.Fragment>Red</React.Fragment>;
 const ComponentBlue = () => <React.Fragment>Blue</React.Fragment>;
+const ComponentBlack = () => <React.Fragment>Black</React.Fragment>;
 const Color: React.SFC<{ color: string }> = ({color}) => <React.Fragment>{color}</React.Fragment>;
 
 describe('Remock', () => {
@@ -27,6 +28,15 @@ describe('Remock', () => {
       </div>);
       remock.clearMocks();
       expect(wrapper.html()).toBe("<div>BlueBlueBlue</div>");
+    });
+
+    it('Should mock all red ones by RegExp', () => {
+      remock.mock(/Component(Red|Blue)/);
+      const wrapper = shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>);
+      remock.clearMocks();
+      expect(wrapper.html()).toBe("<div>Black</div>");
     });
 
     it('Should mock all Blue ones by Class', () => {

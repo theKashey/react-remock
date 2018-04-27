@@ -1,8 +1,9 @@
 import * as React from 'react';
 
 export type AnyElement = string | React.ComponentType<any>;
+export type ElementMatcher = AnyElement | RegExp;
 
-export type Matcher = (type: AnyElement, props: any, children?: any[]) => boolean;
+export type Matcher = (type: ElementMatcher, props: any, children?: any[]) => boolean;
 export type Mocker = (type: AnyElement, props?: any, children?: any[]) => { type?: AnyElement, props?: any, children?: any[] };
 
 export interface Mock {
@@ -29,9 +30,13 @@ const defaultMock = (type: any, props: any) => ({
   }
 });
 
-const mock = (type: AnyElement, mockBy?: Mocker) => {
+const mock = (type: ElementMatcher, mockBy?: Mocker) => {
   const mock = {
-    test: (element: AnyElement) => getNameOf(element) === type || element === type,
+    test: (element: AnyElement) => {
+      const elementName = getNameOf(element);
+      return element === type ||
+      (typeof type !== 'function' && (elementName === type || !!elementName.match(type)))
+    },
     replace: mockBy || defaultMock
   };
   return realAddMock(mock);
