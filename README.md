@@ -1,4 +1,4 @@
-# rewiremock [![Build Status](https://secure.travis-ci.org/theKashey/react-remock.svg)](http://travis-ci.org/theKashey/react-remock)
+# react-remock [![Build Status](https://secure.travis-ci.org/theKashey/react-remock.svg)](http://travis-ci.org/theKashey/react-remock)
 
 [![NPM](https://nodei.co/npm/react-remock.png?downloads=true&stars=true)](https://nodei.co/npm/react-remock/)
 
@@ -47,6 +47,8 @@ If you will not return anything - element willbe completely mocked. In other cas
  
  remock.mock(ComponentClass); // you can mock by class
  
+ remock.mock({ propName:42 }); // you can mock by component props
+ 
  remock.match((type, props, children) => true); // you can mock using user-defined function
  
  remock.mock(Component, (type, props, children) => ({type?, props?, children?})); // you can alter rendering
@@ -65,6 +67,7 @@ If you will not return anything - element willbe completely mocked. In other cas
    </div>
  );
 ```
+PS: preact support it yet untested
 
 ## More examples
 ```js

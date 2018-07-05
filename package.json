@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "preact.js"
   ],
   "scripts": {
     "dev": "ts-react-toolbox dev",
@@ -22,12 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/theKashey/react-rewiremock.git"
+    "url": "git+https://github.com/theKashey/react-remock.git"
   },
   "bugs": {
-    "url": "https://github.com/theKashey/react-rewiremock/issues"
+    "url": "https://github.com/theKashey/react-remock/issues"
   },
-  "homepage": "https://github.com/theKashey/react-rewiremock#readme",
+  "homepage": "https://github.com/theKashey/react-remock#readme",
   "author": "Anton Korzunov (thekashey@gmail.com)",
   "license": "MIT",
   "devDependencies": {
