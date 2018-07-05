@@ -1,6 +1,8 @@
-# react-remock [![Build Status](https://secure.travis-ci.org/theKashey/react-remock.svg)](http://travis-ci.org/theKashey/react-remock)
+# react-remock 
+[![Build Status](https://secure.travis-ci.org/theKashey/react-remock.svg)](http://travis-ci.org/theKashey/react-remock)
+[![Greenkeeper badge](https://badges.greenkeeper.io/theKashey/react-remock.svg)](https://greenkeeper.io/)
 
-[![NPM](https://nodei.co/npm/react-remock.png?downloads=true&stars=true)](https://nodei.co/npm/react-remock/) [![Greenkeeper badge](https://badges.greenkeeper.io/theKashey/react-remock.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/react-remock.png?downloads=true&stars=true)](https://nodei.co/npm/react-remock/) 
 
 JFYI: You can mock any React Component, rendered anywhere, and for the any reason.
 
