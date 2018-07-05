@@ -65,11 +65,24 @@ If you will not return anything - element willbe completely mocked. In other cas
  mount(
    <div>
        <Remocking component="Red">
-       <Red />
+         <Red />
+       </Remocking>
    </div>
  );
 ```
 PS: preact support it yet untested
+
+## Dev/Production
+The best way - not to use remock, and not require it in production.
+
+If that is undoable - use "dev" exports, which will return mocked API for production builds.
+```js
+import {remock} from 'remock/dev';
+
+// you still can run all the commands
+// but remock core does not exists.
+remock.mock(...);
+```
 
 ## More examples
 ```js
