@@ -1,7 +1,7 @@
 {
   "name": "react-remock",
   "version": "0.2.1",
-  "description": "",
+  "description": "Get any Component replaced. Anywhere. 🛠♻️",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

@@ -15,11 +15,18 @@ function patchReact(React: any) {
       });
 
       const originalCreateElement = React.createElement;
+      const originalCloneElement = React.cloneElement;
 
       React.createElement =
         (type: any, props: any, ...args: any[]) => {
           const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
           return originalCreateElement(newType, newProps, ...children);
+        };
+
+      React.cloneElement =
+        (type: any, props: any, ...args: any[]) => {
+          const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
+          return originalCloneElement(newType, newProps, ...children);
         };
 
       React.createFactory = (type: any) => {
