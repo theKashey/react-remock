@@ -119,6 +119,7 @@ remock.mock('div', (type, props) => ({
 # Why you may need it?
 - to empower shallow rendering [Why I Always Use Shallow Rendering](https://medium.com/@antonkorzunov/why-i-always-use-shallow-rendering-a3a50da60942)
 - to wrap your components with another components, you were able to do with jquery - see [examples for react-queue](https://github.com/theKashey/react-queue#examples)
+- color React-Dev-Tools, helping distinquish Stateful/SFC and RenderProps? [code-sandboxexample](https://codesandbox.io/s/x4p2zrvw4).
 
 # See also
 Remock is a little brother of [rewiremock](https://github.com/theKashey/rewiremock)
