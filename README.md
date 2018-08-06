@@ -51,6 +51,10 @@ If you will not return anything - element willbe completely mocked. In other cas
  
  remock.mock({ propName:42 }); // you can mock by component props
  
+ remock.transparent(Component); // replaces Component by () => children. Makes it "transparent"
+ 
+ remock.renderProp(Component, ...arguments); // "unwraps" renderProp component, by calling function-as-children with provided arguments 
+ 
  remock.match((type, props, children) => true); // you can mock using user-defined function
  
  remock.mock(Component, (type, props, children) => ({type?, props?, children?})); // you can alter rendering

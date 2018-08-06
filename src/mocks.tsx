@@ -22,6 +22,8 @@ const getNameOf = (type: any): string => {
 const realAddMock = (mock: Mock) => matchers.push(mock);
 
 const MockedOut: React.SFC = () => null;
+const MockedTransparent: React.SFC = ({children}) => children as any;
+
 const defaultMock = (type: any, props: any) => ({
   type: MockedOut,
   props: {
@@ -35,7 +37,7 @@ const mock = (type: ElementMatcher, mockBy?: Mocker) => {
     test: (element: AnyElement) => {
       const elementName = getNameOf(element);
       return element === type ||
-      (typeof type !== 'function' && (elementName === type || !!elementName.match(type)))
+        (typeof type !== 'function' && (elementName === type || !!elementName.match(type)))
     },
     replace: mockBy || defaultMock
   };
@@ -48,6 +50,28 @@ const match = (match: Matcher, mockBy?: Mocker) => {
     replace: mockBy || defaultMock
   };
   return realAddMock(mock);
+};
+
+const transparent = (type: ElementMatcher) => {
+  return mock(type, () => ({type: MockedTransparent}))
+};
+
+const renderProp = (type: ElementMatcher, ...args: any[]) => {
+  return mock(
+    type,
+    (type, props, _children) => {
+      const children = Array.isArray(_children) ? _children[0]:_children;
+
+      if(typeof children !== "function"){
+        console.error('remock: mocked', type,' expects', children,' to be a function (it is ',typeof children,')');
+        return {};
+      }
+      return {
+        type: MockedTransparent,
+        props: {itWas: type}, children: (children as any)(...args)
+      }
+    }
+  )
 };
 
 const unmock =
@@ -66,6 +90,9 @@ export {
   mock,
   match,
   unmock,
+
+  transparent,
+  renderProp,
 
   clearMocks,
 

@@ -61,6 +61,58 @@ describe('Remock', () => {
       expect(wrapper.html()).toBe("<div>RedBlackRedBlackRedBlack</div>");
     });
 
+    it('should transparentize', () => {
+      const BadComponent:React.SFC = () => <span>dead end</span>;
+
+      const wrapper1 = mount(<BadComponent>good content</BadComponent>);
+      expect(wrapper1.html()).toBe("<span>dead end</span>");
+
+      remock.transparent(BadComponent);
+      const wrapper2 = mount(<BadComponent><div>good content</div></BadComponent>);
+      remock.clearMocks();
+
+      expect(wrapper2.html()).toBe("<div>good content</div>");
+    });
+
+    it('should unwrap renderprop', () => {
+      const RenderProp:React.SFC<{children: (a:number) => React.ReactElement<any>}> = ({children}) => children(42);
+
+      const wrapper1 = mount(<RenderProp>{x => <div>{x}</div>}</RenderProp>);
+      expect(wrapper1.html()).toBe("<div>42</div>");
+
+      const wrapper2 = shallow(<RenderProp>{x => <div>{x}</div>}</RenderProp>);
+      expect(wrapper2.html()).toBe("<div>42</div>");
+
+      remock.renderProp(RenderProp, 24);
+      const wrapper3 = mount(<RenderProp>{x => <div>{x}</div>}</RenderProp>);
+      remock.clearMocks();
+      expect(wrapper3.html()).toBe("<div>24</div>");
+    });
+
+    it('should unwrap class renderprop', () => {
+
+      class RenderProp extends React.Component<{children: (a:number) => React.ReactElement<any>}> {
+        render(){
+          return <div>will render {this.props.children(42)}</div>;
+        }
+      }
+
+      const TopLevel: React.SFC = () => <RenderProp>{x => <div>{x}</div>}</RenderProp>;
+
+      const wrapper1 = mount(<TopLevel/>);
+      expect(wrapper1.text()).toBe("will render 42");
+
+      const wrapper2 = shallow(<TopLevel />);
+      expect(wrapper2.text()).toBe("<RenderProp />");
+
+      remock.renderProp(RenderProp, 24);
+      const wrapper3 = mount(<TopLevel />);
+      remock.clearMocks();
+      expect(wrapper3.text()).toBe("24");
+    });
+
+    // ---------------------------
+
     it('test after all', () => {
       const wrapper = shallow(<div>
         <ComponentRed/><ComponentBlue/>
