@@ -20,7 +20,7 @@
     "static": "ts-react-toolbox publish"
   },
   "peerDependencies": {
-    "react": "^15.0.0 | ^16.0.0"
+    "react": "^15.0.0 || ^16.0.0"
   },
   "repository": {
     "type": "git",
