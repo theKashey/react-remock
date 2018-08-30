@@ -12,7 +12,7 @@ function patchReact(preact: any) {
     const node = {
       nodeName: newType,
       arguments: newProps,
-      children,
+      children: newProps && newProps.children || children,
     };
 
     return oldHandler

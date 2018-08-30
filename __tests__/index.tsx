@@ -30,6 +30,16 @@ describe('Remock', () => {
       expect(wrapper.html()).toBe("<div>BlueBlueBlue</div>");
     });
 
+    it('Should not mock string without exact match', () => {
+      remock.mock('Component');
+      remock.mock('componentred');
+      const wrapper = shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>);
+      remock.clearMocks();
+      expect(wrapper.html()).toBe("<div>RedBlueBlack</div>");
+    });
+
     it('Should mock all red ones by RegExp', () => {
       remock.mock(/Component(Red|Blue)/);
       const wrapper = shallow(<div>
@@ -38,6 +48,7 @@ describe('Remock', () => {
       remock.clearMocks();
       expect(wrapper.html()).toBe("<div>Black</div>");
     });
+
 
     it('Should mock all Blue ones by Class', () => {
       remock.mock(ComponentBlue);
@@ -59,6 +70,16 @@ describe('Remock', () => {
       </div>);
       remock.clearMocks();
       expect(wrapper.html()).toBe("<div>RedBlackRedBlackRedBlack</div>");
+    });
+
+    it('Should replace children', () => {
+      remock.mock(ComponentBlue, (type, props) => <span {...props}>mocked</span>);
+      const wrapper = shallow(<div>
+        <ComponentBlue>original</ComponentBlue>
+        <ComponentBlue>child</ComponentBlue>
+      </div>);
+      remock.clearMocks();
+      expect(wrapper.html()).toBe("<div><span>mocked</span><span>mocked</span></div>");
     });
 
     it('should transparentize', () => {

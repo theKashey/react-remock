@@ -37,7 +37,12 @@ const mock = (type: ElementMatcher, mockBy?: Mocker) => {
     test: (element: AnyElement) => {
       const elementName = getNameOf(element);
       return element === type ||
-        (typeof type !== 'function' && (elementName === type || !!elementName.match(type)))
+        (
+          typeof type !== 'function' && (
+            elementName === type ||
+            (typeof type!=="string" && !!elementName.match(type))
+          )
+        )
     },
     replace: mockBy || defaultMock
   };

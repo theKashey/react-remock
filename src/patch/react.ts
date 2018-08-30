@@ -4,7 +4,7 @@ import {resolver} from '../resolver';
 const SIGN = 'isPatchedByReactRewiremock';
 
 function patchReact(React: any) {
-  if(React) {
+  if (React) {
     if (!React.createElement[SIGN]) {
 
       Object.defineProperty(React.createElement, SIGN, {
@@ -20,13 +20,17 @@ function patchReact(React: any) {
       React.createElement =
         (type: any, props: any, ...args: any[]) => {
           const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
-          return originalCreateElement(newType, newProps, ...children);
+          return newProps && newProps.children
+            ? originalCreateElement(newType, newProps)
+            : originalCreateElement(newType, newProps, ...children);
         };
 
       React.cloneElement =
         (type: any, props: any, ...args: any[]) => {
           const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
-          return originalCloneElement(newType, newProps, ...children);
+          return newProps && newProps.children
+            ? originalCloneElement(newType, newProps)
+            : originalCloneElement(newType, newProps, ...children);
         };
 
       React.createFactory = (type: any) => {
