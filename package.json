@@ -33,7 +33,7 @@
   "author": "Anton Korzunov (thekashey@gmail.com)",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "10.3.4",
+    "@types/node": "10.9.4",
     "ts-react-toolbox": "^0.1.10"
   }
 }
