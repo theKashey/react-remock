@@ -33,6 +33,8 @@ This library was create for testing purposes only.
    - In case you are using BEM notation - it is really super easy to cat a hole, as long dimensions are propertly of a block, not element.
    - Yet again, in case of redux - you can replace connect by another component, to make it easier to provide mocked data for the story.   
 
+ - Remock created not only for testing, but (even more) for hacking into components, and making pretty things.
+
 # API
 
 Play in codesandbox - https://codesandbox.io/s/xk7vp60o4

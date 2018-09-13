@@ -83,20 +83,22 @@ describe('Remock', () => {
     });
 
     it('should transparentize', () => {
-      const BadComponent:React.SFC = () => <span>dead end</span>;
+      const BadComponent: React.SFC = () => <span>dead end</span>;
 
       const wrapper1 = mount(<BadComponent>good content</BadComponent>);
       expect(wrapper1.html()).toBe("<span>dead end</span>");
 
       remock.transparent(BadComponent);
-      const wrapper2 = mount(<BadComponent><div>good content</div></BadComponent>);
+      const wrapper2 = mount(<BadComponent>
+        <div>good content</div>
+      </BadComponent>);
       remock.clearMocks();
 
       expect(wrapper2.html()).toBe("<div>good content</div>");
     });
 
     it('should unwrap renderprop', () => {
-      const RenderProp:React.SFC<{children: (a:number) => React.ReactElement<any>}> = ({children}) => children(42);
+      const RenderProp: React.SFC<{ children: (a: number) => React.ReactElement<any> }> = ({children}) => children(42);
 
       const wrapper1 = mount(<RenderProp>{x => <div>{x}</div>}</RenderProp>);
       expect(wrapper1.html()).toBe("<div>42</div>");
@@ -112,8 +114,8 @@ describe('Remock', () => {
 
     it('should unwrap class renderprop', () => {
 
-      class RenderProp extends React.Component<{children: (a:number) => React.ReactElement<any>}> {
-        render(){
+      class RenderProp extends React.Component<{ children: (a: number) => React.ReactElement<any> }> {
+        render() {
           return <div>will render {this.props.children(42)}</div>;
         }
       }
@@ -123,11 +125,11 @@ describe('Remock', () => {
       const wrapper1 = mount(<TopLevel/>);
       expect(wrapper1.text()).toBe("will render 42");
 
-      const wrapper2 = shallow(<TopLevel />);
+      const wrapper2 = shallow(<TopLevel/>);
       expect(wrapper2.text()).toBe("<RenderProp />");
 
       remock.renderProp(RenderProp, 24);
-      const wrapper3 = mount(<TopLevel />);
+      const wrapper3 = mount(<TopLevel/>);
       remock.clearMocks();
       expect(wrapper3.text()).toBe("24");
     });
@@ -174,17 +176,123 @@ describe('Remock', () => {
 
     it('Should mock blue', () => {
       const wrapper2 = mount(
-          <div>
-            <Remocking component={ComponentBlue} />
+        <div>
+          <Remocking component={ComponentBlue}/>
 
-            <ComponentRed/>
-            <ComponentBlue/>
-          </div>
+          <ComponentRed/>
+          <ComponentBlue/>
+        </div>
       );
       expect(wrapper2.html()).toBe("<div>Red</div>");
       wrapper2.unmount();
     });
   });
 
+  describe('React API', () => {
+    describe('createElement', () => {
+      it('replace type', () => {
+        remock.mock('ComponentRed', () => ({type: ComponentBlue}));
+        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        remock.clearMocks();
+        expect(test.type).toBe(ComponentBlue);
+        expect(test.props).toEqual({
+          prop1: 1,
+          children: 42
+        });
+      });
+
+      it('replace prop', () => {
+        remock.mock('ComponentRed', () => ({props: {prop2: 2}}));
+        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop2: 2,
+          children: 42
+        })
+      });
+
+      it('merge prop', () => {
+        remock.mock('ComponentRed', (type, props) => ({props: {...props, prop2: 2}}));
+        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop1: 1,
+          prop2: 2,
+          children: 42
+        })
+      });
+
+      it('replace child', () => {
+        remock.mock('ComponentRed', () => ({children: 24 as any}));
+        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop1: 1,
+          children: 24
+        })
+      });
+    });
+
+    describe('cloneElement', () => {
+
+      const base = React.createElement(ComponentRed, {prop1: 1}, 42);
+
+      it('replace type', () => {
+        remock.mock('ComponentRed', () => ({type: ComponentBlue}));
+        const test = React.cloneElement(base, {prop2: 2}, 24);
+        remock.clearMocks();
+        expect(test.type).toBe(ComponentBlue);
+        expect(test.props).toEqual({
+          prop1: 1,
+          prop2: 2,
+          children: 24
+        });
+      });
+
+      it('replace prop', () => {
+        remock.mock('ComponentRed', () => ({props: {prop3: 2}}));
+        const test = React.cloneElement(base, {prop2: 2}, 24);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop3: 2,
+          children: 24
+        })
+      });
+
+      it('replace prop, but not children', () => {
+        remock.mock('ComponentRed', () => ({props: {prop3: 2}}));
+        const test = React.cloneElement(base, {prop2: 2});
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop3: 2,
+          children: 42
+        })
+      });
+
+      it('merge prop', () => {
+        remock.mock('ComponentRed', (type, props) => ({props: {...props, prop3: 3}, children: 24 as any}));
+        const test = React.cloneElement(base, {prop2: 2}, 24);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop1: 1,
+          prop2: 2,
+          prop3: 3,
+          children: 24
+        })
+      });
+
+      it('replace prop', () => {
+        remock.mock('ComponentRed', () => ({children: 24 as any}));
+        const test = React.cloneElement(base, {prop2: 2}, 24);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          prop1: 1,
+          prop2: 2,
+          children: 24
+        })
+      });
+    });
+
+  });
 
 });

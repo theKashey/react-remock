@@ -3,6 +3,9 @@ import {resolver} from '../resolver';
 
 const SIGN = 'isPatchedByReactRewiremock';
 
+export const createElement = React.createElement;
+export const cloneElement = React.cloneElement;
+
 function patchReact(React: any) {
   if (React) {
     if (!React.createElement[SIGN]) {
@@ -14,23 +17,19 @@ function patchReact(React: any) {
         value: true,
       });
 
-      const originalCreateElement = React.createElement;
-      const originalCloneElement = React.cloneElement;
-
       React.createElement =
-        (type: any, props: any, ...args: any[]) => {
+        (type: any, props: any = {}, ...args: any[]) => {
           const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
           return newProps && newProps.children
-            ? originalCreateElement(newType, newProps)
-            : originalCreateElement(newType, newProps, ...children);
+            ? createElement(newType, newProps)
+            : createElement(newType, newProps, ...children);
         };
 
       React.cloneElement =
         (type: any, props: any, ...args: any[]) => {
-          const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
-          return newProps && newProps.children
-            ? originalCloneElement(newType, newProps)
-            : originalCloneElement(newType, newProps, ...children);
+          const newElement = cloneElement(type, props, ...args);
+          const children = newElement.props && newElement.props.children || [];
+          return React.createElement(newElement.type, newElement.props, ...children);
         };
 
       React.createFactory = (type: any) => {

@@ -2,8 +2,10 @@
   "name": "react-remock",
   "version": "0.4.1",
   "description": "Get any Component replaced. Anywhere. 🛠♻️",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
+  "types": "dist/es5/index.d.ts",
   "files": [
     "dist",
     "dev",
@@ -17,10 +19,13 @@
     "release": "ts-react-toolbox release",
     "prepublishOnly": "yarn build",
     "lint": "ts-react-toolbox lint",
-    "static": "ts-react-toolbox publish"
+    "static": "ts-react-toolbox publish",
+    "bootstrap": "ts-react-toolbox init",
+    "format": "ts-react-toolbox format",
+    "analyze": "ts-react-toolbox analyze"
   },
   "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0"
+    "react": "^16.0.0"
   },
   "repository": {
     "type": "git",
@@ -34,6 +39,11 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "10.3.4",
-    "ts-react-toolbox": "^0.1.10"
-  }
+    "ts-react-toolbox": "^0.1.21"
+  },
+  "engines": {
+    "node": ">=8.5.0"
+  },
+
+  "keywords": ["react","mock"]
 }
