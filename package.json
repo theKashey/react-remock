@@ -1,6 +1,6 @@
 {
   "name": "react-remock",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Get any Component replaced. Anywhere. 🛠♻️",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -44,6 +44,8 @@
   "engines": {
     "node": ">=8.5.0"
   },
-
-  "keywords": ["react","mock"]
+  "keywords": [
+    "react",
+    "mock"
+  ]
 }
