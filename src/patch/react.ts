@@ -19,17 +19,33 @@ function patchReact(React: any) {
 
       React.createElement =
         (type: any, props: any = {}, ...args: any[]) => {
+          const anyProps = props || {};
           const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
-          return newProps && newProps.children
-            ? createElement(newType, newProps)
-            : createElement(newType, newProps, ...children);
+          const key = anyProps.key;
+          const ref = anyProps.ref;
+          const finalProps = {
+            key,
+            ref,
+            ...newProps
+          };
+
+          return finalProps && (finalProps.children !== anyProps.children)
+            ? createElement(newType, finalProps)
+            : createElement(newType, finalProps, ...children);
         };
 
       React.cloneElement =
         (type: any, props: any, ...args: any[]) => {
           const newElement = cloneElement(type, props, ...args);
-          const children = newElement.props && newElement.props.children || [];
-          return React.createElement(newElement.type, newElement.props, ...children);
+          const key = newElement.key;
+          const ref = newElement.ref;
+          // extract children to separate prop
+          const {children = [], ...rest} = newElement.props || {};
+          return React.createElement(newElement.type, {
+            key,
+            ref,
+            ...rest
+          }, ...children);
         };
 
       React.createFactory = (type: any) => {

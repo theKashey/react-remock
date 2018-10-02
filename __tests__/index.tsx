@@ -213,8 +213,9 @@ describe('Remock', () => {
 
       it('merge prop', () => {
         remock.mock('ComponentRed', (type, props) => ({props: {...props, prop2: 2}}));
-        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        const test = React.createElement(ComponentRed, {prop1: 1, key: 'key'}, 42);
         remock.clearMocks();
+        expect(test.key).toBe('key');
         expect(test.props).toEqual({
           prop1: 1,
           prop2: 2,
@@ -224,24 +225,47 @@ describe('Remock', () => {
 
       it('replace child', () => {
         remock.mock('ComponentRed', () => ({children: 24 as any}));
-        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        const test = React.createElement(ComponentRed, {prop1: 1, children: 22}, 42);
         remock.clearMocks();
         expect(test.props).toEqual({
           prop1: 1,
           children: 24
         })
       });
+
+      it('replace child via props', () => {
+        remock.mock('ComponentRed', () => ({props: {children: 24 as any}}));
+        const test = React.createElement(ComponentRed, {prop1: 1}, 42);
+        remock.clearMocks();
+        expect(test.props).toEqual({
+          children: 24
+        })
+      });
+
+      it('support child overwrite', () => {
+        const test1 = React.createElement(ComponentRed, {prop1: 1}, 42);
+        expect(test1.props).toEqual({
+          prop1: 1,
+          children: 42
+        });
+        const test2 = React.createElement(ComponentRed, {prop1: 2, children: 24}, 42);
+        expect(test2.props).toEqual({
+          prop1: 2,
+          children: 42
+        });
+      });
     });
 
     describe('cloneElement', () => {
 
-      const base = React.createElement(ComponentRed, {prop1: 1}, 42);
+      const base = React.createElement(ComponentRed, {prop1: 1, key: 'key'}, 42);
 
       it('replace type', () => {
         remock.mock('ComponentRed', () => ({type: ComponentBlue}));
         const test = React.cloneElement(base, {prop2: 2}, 24);
         remock.clearMocks();
         expect(test.type).toBe(ComponentBlue);
+        expect(test.key).toBe('key');
         expect(test.props).toEqual({
           prop1: 1,
           prop2: 2,
