@@ -5,22 +5,16 @@ const SIGN = 'isPatchedByReactRewiremock';
 
 export const createElement = React.createElement;
 export const cloneElement = React.cloneElement;
+export const createFactory = React.createFactory;
 
 function patchReact(React: any) {
   if (React) {
     if (!React.createElement[SIGN]) {
 
-      Object.defineProperty(React.createElement, SIGN, {
-        configurable: false,
-        writable: false,
-        enumerable: false,
-        value: true,
-      });
-
       React.createElement =
         (type: any, props: any = {}, ...args: any[]) => {
           const anyProps = props || {};
-          const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args);
+          const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args) as any;
           const key = anyProps.key;
           const ref = anyProps.ref;
           const finalProps = {
@@ -53,8 +47,25 @@ function patchReact(React: any) {
         factory.type = type;
         return factory;
       }
+
+      Object.defineProperty(React.createElement, SIGN, {
+        configurable: false,
+        writable: false,
+        enumerable: false,
+        value: true,
+      });
+    } else {
+      console.log('skipping double patching');
     }
   }
 }
 
-patchReact(React);
+export const enable = () => patchReact(React);
+export const disable = () => {
+  const R = React as any;
+  R.createElement = createElement;
+  R.cloneElement = cloneElement;
+  R.createFactory = createFactory;
+};
+
+enable();

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {shallow, mount} from 'enzyme';
-import {remock, Remocking} from '../src';
+import {remock, Remocking, enable, disable} from '../src';
 
 const ComponentRed = () => <React.Fragment>Red</React.Fragment>;
 const ComponentBlue = () => <React.Fragment>Blue</React.Fragment>;
@@ -80,6 +80,29 @@ describe('Remock', () => {
       </div>);
       remock.clearMocks();
       expect(wrapper.html()).toBe("<div><span>mocked</span><span>mocked</span></div>");
+    });
+
+    it('enable/disable', () => {
+      remock.mock(/Component(Red|Blue)/);
+
+      expect(shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>).html()).toBe("<div>Black</div>");
+      
+      disable();
+
+      expect(shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>).html()).toBe("<div>RedBlueBlack</div>")
+
+      enable();
+
+
+      expect(shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>).html()).toBe("<div>Black</div>")
+
+      remock.clearMocks();
     });
 
     it('should transparentize', () => {

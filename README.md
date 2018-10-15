@@ -78,6 +78,16 @@ If you will not return anything - element willbe completely mocked. In other cas
 ```
 PS: preact support it yet untested
 
+## Additional API
+```js
+import {createElement, enable, disable} from 'rewiremock';
+
+createEleement() // is a "real" React.createElement;
+
+disable() ;// you can always disable rewiremock as a whole
+enable(); // and enable it back
+```
+
 ## Dev/Production
 The best way - not to use remock, and not require it in production.
 

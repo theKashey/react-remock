@@ -5,7 +5,7 @@ export type ElementMatcher = AnyElement | RegExp;
 export type PartialMockedElement = { type?: AnyElement, props?: any, children?: any[] };
 
 export type Matcher = (type: ElementMatcher, props: any, children?: any[]) => boolean;
-export type Mocker = (type: AnyElement, props?: any, children?: any[]) => undefined | PartialMockedElement | React.ComponentType<any>
+export type Mocker = (type: AnyElement, props?: any, children?: any[]) => undefined | PartialMockedElement | React.ReactElement<any>
 
 export interface Mock {
   test: Matcher;
