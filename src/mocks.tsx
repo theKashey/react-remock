@@ -6,6 +6,7 @@ export type PartialMockedElement = { type?: AnyElement, props?: any, children?: 
 
 export type Matcher = (type: ElementMatcher, props: any, children?: any[]) => boolean;
 export type Mocker = (type: AnyElement, props?: any, children?: any[]) => undefined | PartialMockedElement | React.ReactElement<any>
+export type Unsubscribe = () => void;
 
 export interface Mock {
   test: Matcher;
@@ -20,7 +21,10 @@ const getNameOf = (type: any): string => {
   return type.displayName || type.name || 'Component';
 };
 
-const realAddMock = (mock: Mock) => matchers.push(mock);
+const realAddMock = (mock: Mock): Unsubscribe => {
+  matchers.push(mock);
+  return () => matchers = matchers.filter(el => el !== mock);
+};
 
 const MockedOut: React.SFC = () => null;
 const MockedTransparent: React.SFC = ({children}) => children as any;
@@ -33,7 +37,7 @@ const defaultMock = (type: any, props: any) => ({
   }
 });
 
-const mock = (type: ElementMatcher, mockBy?: Mocker) => {
+const mock = (type: ElementMatcher, mockBy?: Mocker): Unsubscribe => {
   const mock = {
     test: (element: AnyElement) => {
       const elementName = getNameOf(element);
@@ -41,7 +45,7 @@ const mock = (type: ElementMatcher, mockBy?: Mocker) => {
         (
           typeof type !== 'function' && (
             elementName === type ||
-            (typeof type!=="string" && !!elementName.match(type))
+            (typeof type !== "string" && !!elementName.match(type))
           )
         )
     },
@@ -50,7 +54,7 @@ const mock = (type: ElementMatcher, mockBy?: Mocker) => {
   return realAddMock(mock);
 };
 
-const match = (match: Matcher, mockBy?: Mocker) => {
+const match = (match: Matcher, mockBy?: Mocker): Unsubscribe => {
   const mock = {
     test: match,
     replace: mockBy || defaultMock
@@ -58,18 +62,18 @@ const match = (match: Matcher, mockBy?: Mocker) => {
   return realAddMock(mock);
 };
 
-const transparent = (type: ElementMatcher) => {
+const transparent = (type: ElementMatcher): Unsubscribe => {
   return mock(type, () => ({type: MockedTransparent}))
 };
 
-const renderProp = (type: ElementMatcher, ...args: any[]) => {
+const renderProp = (type: ElementMatcher, ...args: any[]): Unsubscribe => {
   return mock(
     type,
     (type, props, _children) => {
-      const children = Array.isArray(_children) ? _children[0]:_children;
+      const children = Array.isArray(_children) ? _children[0] : _children;
 
-      if(typeof children !== "function"){
-        console.error('remock: mocked', type,' expects', children,' to be a function (it is ',typeof children,')');
+      if (typeof children !== "function") {
+        console.error('remock: mocked', type, ' expects', children, ' to be a function (it is ', typeof children, ')');
         return {};
       }
       return {

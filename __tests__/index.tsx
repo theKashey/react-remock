@@ -30,6 +30,23 @@ describe('Remock', () => {
       expect(wrapper.html()).toBe("<div>BlueBlueBlue</div>");
     });
 
+    it('Should unmock', () => {
+      const un1=remock.mock('ComponentRed');
+      const un2=remock.mock('ComponentBlue');
+      expect(shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>).html()).toBe("<div>Black</div>");
+      un1();
+      expect(shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>).html()).toBe("<div>RedBlack</div>");
+      un2();
+      expect(shallow(<div>
+        <ComponentRed/><ComponentBlue/><ComponentBlack/>
+      </div>).html()).toBe("<div>RedBlueBlack</div>");
+      remock.clearMocks();
+    });
+
     it('Should not mock string without exact match', () => {
       remock.mock('Component');
       remock.mock('componentred');

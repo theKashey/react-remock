@@ -61,7 +61,12 @@ If you will not return anything - element willbe completely mocked. In other cas
  
  remock.mock(Component, (type, props, children) => ({type?, props?, children?})); // you can alter rendering
  
+ // unmock any mock `like` this
  remock.unmock('ComponentName' | ComponentName);
+ 
+ const unmock = remock.mock(ComponentClass);
+ // remove mock this mock only
+ unmock();
  
  // and dont forget to
  remock.clearMock();
