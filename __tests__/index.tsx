@@ -150,6 +150,7 @@ describe('Remock', () => {
       const wrapper3 = mount(<RenderProp>{x => <div>{x}</div>}</RenderProp>);
       remock.clearMocks();
       expect(wrapper3.html()).toBe("<div>24</div>");
+      expect(wrapper3.debug()).toMatchSnapshot()
     });
 
     it('should unwrap class renderprop', () => {
