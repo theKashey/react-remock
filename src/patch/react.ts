@@ -14,7 +14,12 @@ function patchReact(React: any) {
       React.createElement =
         (type: any, props: any = {}, ...args: any[]) => {
           const anyProps = props || {};
-          const {type: newType = type, props: newProps = props, children = args} = resolver(type, props, args) as any;
+          const resolved = resolver(type, props, args) as any;
+          // it could be resolved to a non-object, and that's legit for renderProp case
+          if (!resolved) {
+            return resolved;
+          }
+          const {type: newType = type, props: newProps = props, children = args} = resolved;
           const key = anyProps.key;
           const ref = anyProps.ref;
           const finalProps = {

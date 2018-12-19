@@ -175,6 +175,15 @@ describe('Remock', () => {
       expect(wrapper3.text()).toBe("24");
     });
 
+    it('should stand null mocks', () => {
+      const RenderProp: React.SFC<any> = ({children}) => children();
+      remock.mock(RenderProp, null);
+      const TopLevel: React.SFC = () => <div><RenderProp>{() => 42}</RenderProp></div>;
+      const wrapper1 = mount(<TopLevel/>);
+      expect(wrapper1.text()).toBe("");
+      remock.clearMocks();
+    });
+
     // ---------------------------
 
     it('test after all', () => {

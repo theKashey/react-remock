@@ -37,6 +37,8 @@ const defaultMock = (type: any, props: any) => ({
   }
 });
 
+const returnNull = (): null => null;
+
 const mock = (type: ElementMatcher, mockBy?: Mocker): Unsubscribe => {
   const mock = {
     test: (element: AnyElement) => {
@@ -49,7 +51,7 @@ const mock = (type: ElementMatcher, mockBy?: Mocker): Unsubscribe => {
           )
         )
     },
-    replace: mockBy || defaultMock
+    replace: typeof mockBy === 'undefined' ? defaultMock : (mockBy || returnNull)
   };
   return realAddMock(mock);
 };
