@@ -70,14 +70,20 @@ If you will not return anything - element willbe completely mocked. In other cas
  
  // and dont forget to
  remock.clearMock();
+
+ // "scoped" mocks for local cleanups 
+ remock.push();
+ remock.mock('anything')
+ remock.pop();
+
  
  
  // You can also use "declarative" React API. (only with mount!)
+ // mocking has a global effect, `Remocking` would only automate cleanup
  mount(
    <div>
-       <Remocking component="Red">
-         <Red />
-       </Remocking>
+       <Remocking component="Red" />
+       <Red />
    </div>
  );
 ```
@@ -85,7 +91,7 @@ PS: preact support it yet untested
 
 ## Additional API
 ```js
-import {createElement, enable, disable} from 'rewiremock';
+import {createElement, enable, disable} from 'react-remock';
 
 createEleement() // is a "real" React.createElement;
 

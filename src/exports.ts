@@ -1,5 +1,5 @@
 import * as remock from './mocks';
-import {Remocking} from './Components';
+import {Remocking} from './Remocking';
 
 export {
   remock,

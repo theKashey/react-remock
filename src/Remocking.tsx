@@ -1,13 +1,16 @@
 import * as React from 'react';
-import {unmock} from "./mocks";
+import {ElementMatcher, Mocker, mock} from "./mocks";
 
 export interface Props {
-  component: React.ComponentType | string;
+  component: ElementMatcher;
+  by?: Mocker;
 }
 
 export class Remocking extends React.Component<Props> {
+  // remock is adding the mock in `resolver`
+
   componentWillUnmount() {
-    unmock(this.props.component)
+    (this.props as any).__unmock();
   }
 
   render(): React.ReactNode {

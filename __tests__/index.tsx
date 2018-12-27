@@ -30,6 +30,24 @@ describe('Remock', () => {
       expect(wrapper.html()).toBe("<div>BlueBlueBlue</div>");
     });
 
+    it('Should mock in stack', () => {
+      const render = () => (
+        shallow(<div>
+          <ComponentRed/><ComponentBlue/>
+          <ComponentRed/><ComponentBlue/>
+          <ComponentRed/><ComponentBlue/>
+        </div>)
+      );
+      remock.mock('ComponentRed');
+      remock.push();
+      remock.mock('ComponentBlue');
+      expect(render().html()).toBe("<div></div>");
+      remock.pop();
+      expect(render().html()).toBe("<div>BlueBlueBlue</div>");
+      remock.clearMocks();
+      expect(render().html()).toBe("<div>RedBlueRedBlueRedBlue</div>");
+    });
+
     it('Should unmock', () => {
       const un1=remock.mock('ComponentRed');
       const un2=remock.mock('ComponentBlue');
@@ -234,6 +252,27 @@ describe('Remock', () => {
         </div>
       );
       expect(wrapper2.html()).toBe("<div>Red</div>");
+      wrapper2.unmount();
+      // ensure unmount
+      const wrapper = mount(
+        <div>
+          <ComponentRed/>
+          <ComponentBlue/>
+        </div>
+      );
+      expect(wrapper.html()).toBe("<div>RedBlue</div>");
+    });
+
+    it('Should mock by replace', () => {
+      const wrapper2 = mount(
+        <div>
+          <Remocking component={ComponentBlue} by={ComponentRed} />
+
+          <ComponentRed/>
+          <ComponentBlue/>
+        </div>
+      );
+      expect(wrapper2.html()).toBe("<div>RedRed</div>");
       wrapper2.unmount();
     });
   });

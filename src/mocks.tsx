@@ -14,6 +14,7 @@ export interface Mock {
 }
 
 let matchers: Mock[] = [];
+let matcherStack: Array<Mock[]> = [];
 
 const getNameOf = (type: any): string => {
   if (!type) return 'Unknown';
@@ -99,6 +100,14 @@ const clearMocks = () => {
   matchers = [];
 };
 
+const push = () => {
+  matcherStack.push([...matchers]);
+};
+
+const pop = () => {
+  matchers = matcherStack.pop();
+};
+
 const getMocks = () => matchers;
 
 
@@ -111,6 +120,8 @@ export {
   renderProp,
 
   clearMocks,
+  push,
+  pop,
 
   getMocks
 }
