@@ -40,6 +40,8 @@ const defaultMock = (type: any, props: any) => ({
 
 const returnNull = (): null => null;
 
+const isRegExp = (exp: any) => exp && exp.constructor === RegExp;
+
 const mock = (type: ElementMatcher, mockBy?: Mocker): Unsubscribe => {
   const mock = {
     test: (element: AnyElement) => {
@@ -48,7 +50,7 @@ const mock = (type: ElementMatcher, mockBy?: Mocker): Unsubscribe => {
         (
           typeof type !== 'function' && (
             elementName === type ||
-            (typeof type !== "string" && !!elementName.match(type))
+            (isRegExp(type) && !!elementName.match(type))
           )
         )
     },

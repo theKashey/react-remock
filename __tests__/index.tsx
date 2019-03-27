@@ -84,6 +84,15 @@ describe('Remock', () => {
       expect(wrapper.html()).toBe("<div>Black</div>");
     });
 
+    it('Should mock forwardRef', () => {
+      const Component = React.forwardRef(() => <ComponentRed />);
+      remock.mock(Component);
+      const wrapper = shallow(<div>
+        <ComponentRed/><Component/><ComponentBlack/>
+      </div>);
+      remock.clearMocks();
+      expect(wrapper.html()).toBe("<div>RedBlack</div>");
+    });
 
     it('Should mock all Blue ones by Class', () => {
       remock.mock(ComponentBlue);
