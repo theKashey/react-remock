@@ -1,18 +1,5 @@
-# react-remock 
-[![Build Status](https://secure.travis-ci.org/theKashey/react-remock.svg)](http://travis-ci.org/theKashey/react-remock)
-[![Greenkeeper badge](https://badges.greenkeeper.io/theKashey/react-remock.svg)](https://greenkeeper.io/)
-
-[![NPM](https://nodei.co/npm/react-remock.png?downloads=true&stars=true)](https://nodei.co/npm/react-remock/) 
-
-JFYI: You can mock any React Component, rendered anywhere, and for the any reason.
-
-This is like proxyquire, or jest.mock. Not for node.js, but for React. Pure React Dependency Injection.
->Every time you can NOT "story" something due to complexity. 
-Every time you can NOT "enzyme" something, cos something deeply inside is "too smart" (and you can't use shallow). 
-Every that time – mock the things you can NOT control.
-
 ```text
-                     /$$      /$$                     /$$      
+ react-              /$$      /$$                     /$$      
                     | $$$    /$$$                    | $$      
   /$$$$$$   /$$$$$$ | $$$$  /$$$$  /$$$$$$   /$$$$$$$| $$   /$$
  /$$__  $$ /$$__  $$| $$ $$/$$ $$ /$$__  $$ /$$_____/| $$  /$$/
@@ -22,10 +9,23 @@ Every that time – mock the things you can NOT control.
 |__/       \_______/|__/     |__/ \______/  \_______/|__/  \__/
 ```
 
-Remock is based on the same technique, as [React-Hot-Loader](https://github.com/gaearon/react-hot-loader) - intercepts React calls and do.. what ever you want.
+[![Build Status](https://secure.travis-ci.org/theKashey/react-remock.svg)](http://travis-ci.org/theKashey/react-remock)
+[![Greenkeeper badge](https://badges.greenkeeper.io/theKashey/react-remock.svg)](https://greenkeeper.io/)
+[![npm](https://img.shields.io/npm/v/react-remock.svg)](https://www.npmjs.com/package/react-remock)
+[![downloads](https://badgen.net/npm/dm/react-remock)](https://www.npmtrends.com/react-remock)
+
+JFYI: You can __mock any React Component__, rendered anywhere, and for the any reason.
+
+This is like __proxyquire__, or jest.mock. Not for node.js, but for React. Pure __React Dependency Injection__.
+
+- Every time you can NOT "storybook" something due to complexity. 
+- Every time you can NOT "enzyme" something, cos something deeply inside is "too smart" (and you can't use shallow). 
+- Every ^that^ time – mock the things you can NOT control.
+
+Remock is based on the same technique, as [React-Hot-Loader](https://github.com/gaearon/react-hot-loader) - intercepts React calls and do... whatever you want.
 
 # Use cases
-This library was create for testing purposes only.
+This library was created for testing purposes only, while could be used to achive different tasks:
  - Using remock with __enzyme__ testing allows you to perform more _shallow_ mount testing.
  You can just mock out, complitely remove some (deep nested internal) Component which could make testing harder. For example - Redux Connect, always seeking proper Provider.
  
@@ -33,13 +33,17 @@ This library was create for testing purposes only.
    - In case you are using BEM notation - it is really super easy to cat a hole, as long dimensions are propertly of a block, not element.
    - Yet again, in case of redux - you can replace connect by another component, to make it easier to provide mocked data for the story.   
 
- - Remock created not only for testing, but (even more) for hacking into components, and making pretty things.
+ - Remock created not only for testing, but (even more) for _hacking into_ components, and making pretty things.
+ 
+## Featured in
+- [(in)Finite War](https://dev.to/thekashey/infinite-war-995)
+- [Why I Always Use Shallow Rendering](https://hackernoon.com/why-i-always-use-shallow-rendering-a3a50da60942)
 
 # API
 
 Play in codesandbox - https://codesandbox.io/s/xk7vp60o4
 
-Api is simple - it gets `React.createElement` as an input and returns `React.createElement` as an output.
+API is simple - it gets `React.createElement` as an input and returns `React.createElement` as an output.
 And it will be called when real `React.createElement` has been called.
 
 If you will not return anything - element willbe completely mocked. In other cases - you could specify what to return.
