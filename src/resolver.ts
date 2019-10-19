@@ -10,7 +10,7 @@ const resolver = (type: AnyElement, props: any, children: any[]): PartialMockedE
   if (mocks.length) {
     return mocks[mocks.length - 1].replace(type, props, children)
   }
-  return {type, props, children};
+  return undefined;
 };
 
 

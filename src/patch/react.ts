@@ -16,6 +16,10 @@ function patchReact(React: any) {
           const anyProps = props || {};
           const resolved = resolver(type, props, args) as any;
           // it could be resolved to a non-object, and that's legit for renderProp case
+          if (resolved === undefined) {
+            // @ts-ignore
+            return createElement.apply(this, arguments);
+          }
           if (!resolved) {
             return resolved;
           }
