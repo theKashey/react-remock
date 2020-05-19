@@ -92,9 +92,10 @@
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.0.0.tgz#c40f8e07dce607d3ef25a626b93a6a7cdcf97881"
 
-"@types/node@10.3.4":
-  version "10.3.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.4.tgz#c74e8aec19e555df44609b8057311052a2c84d9e"
+"@types/node@14.0.2":
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.2.tgz#e6ba5b2fbf92154e2d126c61e8cc5b114f469ca6"
+  integrity sha512-iQgg5AfQVQ766QGtK90g3EctbIe5Xwf1xMafnQB3WUr5hkrT5CUMbzMGtxSsICNWSgExILgQ+8kCfX2p0OKWGg==
 
 "@types/react-dom@^16.0.4":
   version "16.0.5"
