@@ -97,7 +97,7 @@ PS: preact support it yet untested
 ```js
 import {createElement, enable, disable} from 'react-remock';
 
-createEleement() // is a "real" React.createElement;
+createElement() // is a "real" React.createElement;
 
 disable() ;// you can always disable rewiremock as a whole
 enable(); // and enable it back
