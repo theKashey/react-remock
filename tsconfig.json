@@ -12,6 +12,7 @@
       "es2015.iterable",
       "es2015.promise"
     ],
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true
   }
 }

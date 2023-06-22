@@ -14,7 +14,9 @@
 [![npm](https://img.shields.io/npm/v/react-remock.svg)](https://www.npmjs.com/package/react-remock)
 [![downloads](https://badgen.net/npm/dm/react-remock)](https://www.npmtrends.com/react-remock)
 
-JFYI: You can __mock any React Component__, rendered anywhere, and for the any reason.
+FYI: You can __mock any React Component__, rendered anywhere, and for the any reason.
+
+> Requires external configuration to work with React18 / jsx-runtime 
 
 This is like __proxyquire__, or jest.mock. Not for node.js, but for React. Pure __React Dependency Injection__.
 
@@ -102,6 +104,23 @@ createElement() // is a "real" React.createElement;
 disable() ;// you can always disable rewiremock as a whole
 enable(); // and enable it back
 ```
+
+# React 18
+Out of the box Remock does not support React 18 to maintain backward compatibility.
+Currently, you have to patch jsx-runtime at the user side
+```tsx
+// import jsx runtime
+import jsxRuntime from "react/jsx-runtime";
+import jsxRuntimeDev from "react/jsx-dev-runtime";
+
+// import patch helper
+import {patchJsxRuntime} from 'react-remock';
+
+// apply the patch
+patchJsxRuntime(jsxRuntime);
+patchJsxRuntime(jsxRuntimeDev);
+```
+This may be fixed in the future versions
 
 ## Dev/Production
 The best way - not to use remock, and not require it in production.

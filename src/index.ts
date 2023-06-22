@@ -1,4 +1,4 @@
-import {createElement, cloneElement, enable, disable} from "./patch/react";
+import {createElement, cloneElement, enable, disable, patchJsxRuntime} from "./patch/react";
 
 export * from "./exports";
 export {
