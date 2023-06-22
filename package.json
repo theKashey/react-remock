@@ -1,6 +1,6 @@
 {
   "name": "react-remock",
-  "version": "0.8.2",
+  "version": "1.0.0",
   "description": "Get any Component replaced. Anywhere. 🛠♻️",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
